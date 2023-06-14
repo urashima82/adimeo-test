@@ -4,3 +4,21 @@
  * @file
  * Primary module hooks for Adimeo module.
  */
+
+/**
+ * Implements hook_cron().
+ */
+function adimeo_cron() {
+  // Get all published passed events.
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'event')
+    ->condition('status', 1)
+    ->condition('field_date_range.end_value', date('Y-m-d'), '<')
+    ->accessCheck();
+
+  // Add to queue.
+  $nids = $query->execute();
+  foreach ($nids as $nid) {
+    \Drupal::queue('adimeo_unpublish_node')->createItem($nid);
+  }
+}
