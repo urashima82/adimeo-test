@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Theme functions for Test Drupal theme.
+ */
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function test_drupal_preprocess_node(&$variables) {
+  // If node view mode is full and node type is event, add next events block.
+  if ($variables['view_mode'] == 'full' && $variables['node']->bundle() == 'event') {
+    // Create block instance.
+    $block = \Drupal::service('plugin.manager.block')->createInstance('adimeo_next_events', []);
+    // Add block content to node variables.
+    $variables['content'][] = [
+      'next_events' => $block->build(),
+      '#weight' => 10,
+    ];
+  }
+}
