@@ -1,0 +1,5 @@
+name: Adimeo
+type: module
+description: Provides additional functionality for the site.
+package: Adimeo
+core_version_requirement: ^9 || ^10
